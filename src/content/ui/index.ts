@@ -1,6 +1,6 @@
 import m from 'mithril'
 import tocCSS from '../style/toc.css'
-import { Article, Heading, Offset, Scroller } from '../types'
+import { Article, Heading, Offset, Scroller, Theme } from '../types'
 import { addCSS } from '../util/dom/css'
 import { Stream } from '../util/stream'
 import { Handle } from './handle'
@@ -76,6 +76,8 @@ export const ui = {
     $headings: Stream<Heading[]>
     $activeHeading: Stream<number>
     $topbarHeight: Stream<number>
+    theme: Theme
+    fontSize: number
     onDrag(offset: Offset): void
     onScrollToHeading(index: number): Promise<void>
   }) => {
@@ -87,6 +89,8 @@ export const ui = {
       $headings,
       $activeHeading,
       $topbarHeight,
+      theme,
+      fontSize,
       onDrag,
       onScrollToHeading,
     } = options
@@ -132,14 +136,20 @@ export const ui = {
         return m(
           'nav#smarttoc',
           {
-            class: isTooManyHeadings() ? 'lengthy' : '',
-            style: calcStyle({
-              article: $article(),
-              scroller: $scroller(),
-              offset: $offset(),
-              topMargin: $topbarHeight() || 0,
-              placement: initialPlacement,
-            }),
+            class: [
+              isTooManyHeadings() ? 'lengthy' : '',
+              `theme-${theme}`,
+            ].filter(Boolean).join(' '),
+            style: {
+              ...calcStyle({
+                article: $article(),
+                scroller: $scroller(),
+                offset: $offset(),
+                topMargin: $topbarHeight() || 0,
+                placement: initialPlacement,
+              }),
+              fontSize: `${fontSize}px`,
+            },
           },
           [
             m(Handle, {

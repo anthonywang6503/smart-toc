@@ -2,6 +2,7 @@ import { extractHeadings } from './lib/extract'
 import { enterReadableMode, leaveReadableMode } from './lib/readable'
 import { getScrollElement, getScrollTop, smoothScroll } from './lib/scroll'
 import { Article, Content, Heading, Scroller } from './types'
+import { TocSettings } from './settings'
 import { ui } from './ui/index'
 import { createEventEmitter } from './util/event'
 import { Stream } from './util/stream'
@@ -12,6 +13,9 @@ export interface TocPreference {
     x: number
     y: number
   }
+  isRememberPos: boolean
+  theme: TocSettings['theme']
+  fontSize: TocSettings['fontSize']
 }
 
 export interface TocEvents {
@@ -319,12 +323,6 @@ export function createToc(options: {
   }
   $content.subscribe(validate)
 
-  let isRememberPos = true;
-  chrome.storage.local.get({
-    isRememberPos: true
-  }, function (items) {
-    isRememberPos = items.isRememberPos;
-  });
   ui.render({
     $isShown,
     $article: $content.map((c) => c.article),
@@ -333,9 +331,11 @@ export function createToc(options: {
     $offset,
     $activeHeading,
     $topbarHeight,
+    theme: options.preference.theme,
+    fontSize: options.preference.fontSize,
     onDrag(offset) {
       $offset(offset)
-      if (isRememberPos) {
+      if (options.preference.isRememberPos) {
         const data = {};
         data[offsetKey] = offset;
         chrome.storage.local.set(data, function () {
@@ -380,6 +380,9 @@ export function createToc(options: {
   const getPreference = (): TocPreference => {
     return {
       offset: $offset(),
+      isRememberPos: options.preference.isRememberPos,
+      theme: options.preference.theme,
+      fontSize: options.preference.fontSize,
     }
   }
 

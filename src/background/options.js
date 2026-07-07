@@ -1,53 +1,74 @@
-// Saves options to chrome.storage
-function save_options() {
-  var autoType = document.querySelector('input[name="auto"]:checked').value;
-  var showTip = document.getElementById('show-tip').checked;
-	var rememberPos = document.getElementById('remember-pos').checked;
-  var selectorInoreader = document.getElementById('selector-inoreader').value;
-	var selectorFeedly =	document.getElementById('selector-feedly').value;
-  chrome.storage.local.set({
-    isShowTip: showTip,
-    isRememberPos: rememberPos,
-		autoType: autoType,
-    selectorInoreader: selectorInoreader,
-    selectorFeedly, selectorFeedly
-  }, function() {
-    var status = document.getElementById('status');
-    status.textContent = 'Options saved. / 已保存。';
-    setTimeout(function() {
-      status.textContent = '';
-    }, 5000);
-  });
+const settings = SmartTocSettings
+
+const getElement = (id) => document.getElementById(id)
+
+const getCheckedValue = (name) => {
+  const checked = document.querySelector(`input[name="${name}"]:checked`)
+  return checked ? checked.value : undefined
 }
 
-// Restores select box and checkbox state using the preferences
-// stored in chrome.storage.
-function restore_options() {
-  chrome.storage.local.get({
-    isShowTip: true,
-    isRememberPos: true,
-		autoType: '0',
-    selectorInoreader: '.article_content',
-    selectorFeedly: '.entryBody'
-  }, function(items) {
-    document.getElementById('show-tip').checked = items.isShowTip;
-    document.getElementById('remember-pos').checked = items.isRememberPos;
-		document.getElementById('auto-'+items.autoType).checked = true;
-		document.getElementById('selector-inoreader').value = items.selectorInoreader;
-		document.getElementById('selector-feedly').value = items.selectorFeedly;
-  });
+const setStatus = (message) => {
+  const status = getElement('status')
+  status.textContent = message
+  setTimeout(() => {
+    status.textContent = ''
+  }, 5000)
 }
 
-function reset_options(){
-	chrome.storage.local.clear();
-	restore_options();
+const readForm = () => {
+  return settings.normalizeTocSettings({
+    autoType: getCheckedValue('auto'),
+    isShowTip: getElement('show-tip').checked,
+    isRememberPos: getElement('remember-pos').checked,
+    selectorInoreader: getElement('selector-inoreader').value,
+    selectorFeedly: getElement('selector-feedly').value,
+    theme: getCheckedValue('theme'),
+    fontSize: getElement('font-size').value,
+    disabledDomains: getElement('disabled-domains').value,
+  })
 }
 
-document.addEventListener('DOMContentLoaded', restore_options);
-var inputs = document.getElementsByTagName('input');
-for (let index = 0; index < inputs.length; index++) {
-	const input = inputs[index];
-	input.addEventListener('change', save_options);
+const writeForm = (storedSettings) => {
+  const options = settings.normalizeTocSettings(storedSettings)
+
+  getElement('show-tip').checked = options.isShowTip
+  getElement('remember-pos').checked = options.isRememberPos
+  getElement(`auto-${options.autoType}`).checked = true
+  getElement(`theme-${options.theme}`).checked = true
+  getElement('font-size').value = String(options.fontSize)
+  getElement('selector-inoreader').value = options.selectorInoreader
+  getElement('selector-feedly').value = options.selectorFeedly
+  getElement('disabled-domains').value = options.disabledDomains.join('\n')
 }
 
-document.getElementById("btnReset").addEventListener('click', reset_options);
+const save_options = () => {
+  const options = readForm()
+
+  chrome.storage.local.set(options, () => {
+    writeForm(options)
+    setStatus('Options saved. / 已保存。')
+  })
+}
+
+const restore_options = () => {
+  chrome.storage.local.get(settings.DEFAULT_TOC_SETTINGS, (items) => {
+    writeForm(items)
+  })
+}
+
+const reset_options = () => {
+  chrome.storage.local.clear(() => {
+    restore_options()
+    setStatus('Options reset. / 已重設。')
+  })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  restore_options()
+
+  document.querySelectorAll('input, textarea').forEach((input) => {
+    input.addEventListener('change', save_options)
+  })
+
+  getElement('btnReset').addEventListener('click', reset_options)
+})

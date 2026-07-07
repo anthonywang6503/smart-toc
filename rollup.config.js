@@ -1,10 +1,10 @@
-import replace from 'rollup-plugin-replace'
-import { string } from 'rollup-plugin-string'
-import nodeResolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
-import ts from 'rollup-plugin-typescript2'
+const replace = require('@rollup/plugin-replace')
+const { string } = require('rollup-plugin-string')
+const { nodeResolve } = require('@rollup/plugin-node-resolve')
+const commonjs = require('@rollup/plugin-commonjs')
+const ts = require('rollup-plugin-typescript2')
 
-export default {
+module.exports = {
   input: 'src/content/index.ts',
   output: {
     format: 'iife',
@@ -12,12 +12,11 @@ export default {
     name: 'smarttoc',
   },
   plugins: [
-    replace({
-      'process.env': JSON.stringify({
-        ENV: process.env.ENV,
-      }),
-    }),
     ts(),
+    replace({
+      preventAssignment: true,
+      'process.env.ENV': JSON.stringify(process.env.ENV || ''),
+    }),
     nodeResolve({ main: true, browser: true }),
     commonjs(),
     string({ include: '**/*.css' }),

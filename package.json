@@ -3,17 +3,24 @@
   "version": "0.0.1",
   "description": "an chrome extension that generates a table of content for webpage",
   "main": "src/js/index.js",
+  "packageManager": "pnpm@11.10.0",
+  "engines": {
+    "node": "24.18.x",
+    "pnpm": ">=11.10.0"
+  },
   "scripts": {
-    "clean": "rm -rf dist/* firefox/* chrome/*",
-    "start": "export ENV=development && yarn run build:background && rollup --config rollup.config.js --watch",
-    "lint:watch": "tsc --watch",
-    "build": "export ENV=production && yarn run clean; yarn run build:content && yarn run build:background && yarn run build:chrome && yarn run build:firefox",
+    "clean": "shx rm -rf dist firefox chrome",
+    "start": "cross-env ENV=development pnpm run build:background && rollup --config rollup.config.js --watch",
+    "lint": "tsc --noEmit",
+    "lint:watch": "tsc --noEmit --watch",
+    "test": "tsx --test test/**/*.test.ts",
+    "build": "cross-env ENV=production pnpm run clean && pnpm run build:content && pnpm run build:background && pnpm run build:chrome && pnpm run build:firefox",
     "build:content": "rollup --config rollup.config.js",
-    "build:background": "mkdir -p dist && cp -R src/background/* dist/",
-    "build:chrome": "mkdir -p chrome && zip -r chrome/smart-toc.zip dist",
-    "build:firefox": "yarn run build:firefox:package && yarn run build:firefox:source",
+    "build:background": "shx mkdir -p dist && shx cp -R src/background/* dist/",
+    "build:chrome": "shx mkdir -p chrome && bestzip chrome/smart-toc.zip dist/*",
+    "build:firefox": "pnpm run build:firefox:package && pnpm run build:firefox:source",
     "build:firefox:package": "web-ext build --overwrite-dest --artifacts-dir ./firefox --source-dir  ./dist/ ",
-    "build:firefox:source": "zip -r ./firefox/smart-toc_source.zip src package.json README.md tsconfig.json rollup.config.js yarn.lock"
+    "build:firefox:source": "bestzip firefox/smart-toc_source.zip src package.json README.md tsconfig.json rollup.config.js pnpm-lock.yaml"
   },
   "repository": {
     "type": "git",
@@ -34,21 +41,25 @@
   },
   "homepage": "https://github.com/FallenMax/smart-toc#readme",
   "devDependencies": {
-    "@types/chrome": "^0.0.154",
-    "@types/mithril": "^2.0.8",
-    "rollup": "2.56.0",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0",
-    "rollup-plugin-replace": "2.2.0",
+    "@rollup/plugin-commonjs": "^29.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-replace": "^6.0.3",
+    "@types/chrome": "^0.2.2",
+    "@types/mithril": "^2.2.8",
+    "@types/node": "^26.1.0",
+    "bestzip": "^3.0.1",
+    "cross-env": "^10.1.0",
+    "rollup": "4.62.2",
     "rollup-plugin-string": "^3.0.0",
-    "rollup-plugin-typescript": "^1.0.1",
-    "rollup-plugin-typescript2": "^0.36.0",
-    "typescript": "^4.3.5",
-    "web-ext": "^6.2.0"
+    "rollup-plugin-typescript2": "^0.37.0",
+    "shx": "^0.4.0",
+    "tsx": "^4.23.0",
+    "typescript": "^6.0.3",
+    "web-ext": "^10.4.0"
   },
   "dependencies": {
-    "mithril": "^2.0.4",
-    "pcf-start": "^1.6.5",
-    "tslib": "^2.3.0"
+    "mithril": "^2.3.8",
+    "pcf-start": "^1.51.1",
+    "tslib": "^2.8.1"
   }
 }

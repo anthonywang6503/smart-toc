@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Simple Outliner / 智能网页大纲 - Support Inoreader and Feedly</title>
+	<title>Simple Outliner / 智慧網頁大綱 - 支援 Inoreader 與 Feedly</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Content-Security-Policy"
 		content="script-src 'self';object-src 'self';script-src-elem 'self' 'unsafe-inline';">
@@ -21,6 +21,19 @@
 		#status {
 			color: green;
 		}
+
+		.option-help {
+			color: #666;
+			font-size: 13px;
+			margin: 6px 0 16px;
+		}
+
+		textarea {
+			box-sizing: border-box;
+			font-family: monospace;
+			min-height: 120px;
+			width: 100%;
+		}
 	</style>
 </head>
 
@@ -28,27 +41,27 @@
 
 	<div class="main-container">
 		<header>
-			Simple Outliner Options / 智能网页大纲-选项
+			Simple Outliner Options / 智慧網頁大綱 - 選項
 		</header>
 
-		<h1>Auto Load / 自动加载</h1>
+		<h1>Auto Load / 自動載入</h1>
 		<hr />
 		<div class="radio">
 			<div>
 				<input id="auto-0" type="radio" name="auto" value="0">
-				<label for="auto-0">Disable / 禁用</label>
+				<label for="auto-0">Disable / 停用</label>
 			</div>
 		</div>
 		<div class="radio">
 			<div>
 				<input id="auto-1" type="radio" name="auto" value="1">
-				<label for="auto-1">All Page / 所有页面</label>
+				<label for="auto-1">All Page / 所有網頁</label>
 			</div>
 		</div>
 		<div class="radio">
 			<div>
 				<input id="auto-2" type="radio" name="auto" value="2">
-				<label for="auto-2">Inoreader and Feedly Web App / 网页版 Inoreader 和 Feedly</label>
+				<label for="auto-2">Inoreader and Feedly Web App / 網頁版 Inoreader 與 Feedly</label>
 			</div>
 		</div>
 
@@ -57,30 +70,52 @@
 
 		<div class="checkbox">
 			<label>
-				<input type="checkbox" id="show-tip" /><span></span> Show Detect Toast / 显示检测提示
+				<input type="checkbox" id="show-tip" /><span></span> Show Detect Toast / 顯示偵測提示
 			</label>
 		</div>
 		<div class="checkbox">
 			<label>
-				<input type="checkbox" id="remember-pos" /><span></span> Remember TOC Position / 记住目录位置
+				<input type="checkbox" id="remember-pos" /><span></span> Remember TOC Position / 記住目錄位置
 			</label>
 		</div>
+		<h3>TOC Theme / 目錄風格</h3>
+		<div class="radio">
+			<div>
+				<input id="theme-light" type="radio" name="theme" value="light">
+				<label for="theme-light">Light / 亮色</label>
+			</div>
+		</div>
+		<div class="radio">
+			<div>
+				<input id="theme-dark" type="radio" name="theme" value="dark">
+				<label for="theme-dark">Dark / 深色</label>
+			</div>
+		</div>
+		<h3>TOC Font Size / 目錄字型大小</h3>
+		<input type="number" id="font-size" min="8" max="32" step="1" />
+		<div class="option-help">Use px value from 8 to 32. / 請輸入 8 到 32 的 px 數值。</div>
+
+		<h1>Disabled Domains / 負面網站清單</h1>
+		<hr />
+		<h3>Domains where Smart TOC is disabled / 不啟用 Smart TOC 的 domain</h3>
+		<textarea id="disabled-domains" placeholder="example.com&#10;developer.mozilla.org"></textarea>
+		<div class="option-help">One domain per line. The context menu can add the current tab domain automatically. / 每行一個 domain，也可透過右鍵選單自動加入目前分頁 domain。</div>
 
 		<h1>Inoreader and Feedly Support</h1>
 		<hr />
 		<div>
-			<font color="red">Don't change this unless the web apps change its dom. / 除非它们的网页结构发生了变化，否则不要进行修改。</font>
+			<font color="red">Don't change this unless the web apps change its dom. / 除非它們的網頁結構發生變化，否則請勿修改。</font>
 		</div>
-		<h3>Inoreader article querySelector / Inoreader 文章选择器</h3>
+		<h3>Inoreader article querySelector / Inoreader 文章選取器</h3>
 		<input type="text" id="selector-inoreader" />
-		<h3>Feedly article querySelector / Feedly 文章选择器</h3>
+		<h3>Feedly article querySelector / Feedly 文章選取器</h3>
 		<input type="text" id="selector-feedly" />
 
 		<br />
 		<br />
 		<hr />
 		<br />
-		<button style="font-size:16px;" id="btnReset">Reset / 重置设置</button>
+		<button style="font-size:16px;" id="btnReset">Reset / 重設設定</button>
 
 		<br />
 
@@ -100,6 +135,7 @@
 		<div id="status"></div>
 	</div>
 
+	<script src="settings.js"></script>
 	<script src="options.js"></script>
 
 </body>

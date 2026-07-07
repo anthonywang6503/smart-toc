@@ -1,6 +1,7 @@
 import { isDebugging } from '../util/env'
 import { draw } from '../util/debug'
 import { Heading } from '../types'
+import { DEFAULT_TOC_SETTINGS, TocSettings } from '../settings'
 import { toArray } from '../util/dom/to_array'
 import { canScroll } from './scroll'
 
@@ -63,7 +64,10 @@ const getElemsCommonLeft = (elems: HTMLElement[]): number | undefined => {
   return most
 }
 
-export const extractArticle = function(): HTMLElement | undefined {
+export const extractArticle = function(
+  settings: Pick<TocSettings, 'selectorInoreader' | 'selectorFeedly'> =
+    DEFAULT_TOC_SETTINGS,
+): HTMLElement | undefined {
   const elemScores = new Map<HTMLElement, number>()
 
   // weigh nodes by factor: "selector" "distance from this node"
@@ -145,19 +149,8 @@ export const extractArticle = function(): HTMLElement | undefined {
   const isInoReader = dm.indexOf('inoreader.com')>=0 || dm.indexOf('innoreader.com')>0;
   const isFeedly = dm.indexOf('feedly.com')>=0;
 
-  let selectorInoreader = '.article_content'
-  let selectorFeedly = '.entryBody'
-
-  chrome.storage.local.get({
-    selectorInoreader: '.article_content',
-    selectorFeedly: '.entryBody'
-  }, function(items) {
-    selectorInoreader = items.selectorInoreader
-    selectorFeedly = items.selectorFeedly
-  });
-
   if(isInoReader || isFeedly){
-    const articleClass= isFeedly ? selectorFeedly : selectorInoreader
+    const articleClass= isFeedly ? settings.selectorFeedly : settings.selectorInoreader
     const content = document.querySelector(articleClass)
     if(content!=null){
       article = content as HTMLElement

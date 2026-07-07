@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Simple Outliner / 智能网页大纲",
+  "name": "Simple Outliner / 智慧網頁大綱",
   "version": "0.7.4",
-  "description": "Simple Outliner / 自动生成网页大纲、目录，Support Inoreader and Feedly。",
+  "description": "Simple Outliner / 自動生成網頁大綱、目錄，支援 Inoreader 與 Feedly。",
   "options_page": "options.html",
   "action": {
     "default_icon": "icon.png",
-    "default_title": "Simple Outliner / 智能网页大纲"
+    "default_title": "Simple Outliner / 智慧網頁大綱"
   },
   "icons": {
     "16": "icon.png",
@@ -38,13 +38,13 @@
         "chromeos": "Ctrl+Shift+E",
         "linux": "Ctrl+Shift+E"
       },
-      "description": "Load/unload TOC"
+      "description": "載入/卸載 目錄"
     },
     "prev": {
-      "description": "Jump to previous heading"
+      "description": "跳至上一個標題"
     },
     "next": {
-      "description": "Jump to next heading"
+      "description": "跳至下一個標題"
     }
   },
   "permissions": [

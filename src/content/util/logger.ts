@@ -10,9 +10,9 @@ export const createLogger = (name: string) => (...args: any[]) => {
 }
 
 /**
- * 记录函数调用和返回
+ * 記錄函式呼叫與回傳
  *
- * 创建一个装饰器，装饰后的 fn 会记录调用参数和返回结果
+ * 建立一個裝飾器，裝飾後的 fn 會記錄呼叫參數與回傳結果
  */
 export const createLoggingDecorator = <T extends AnyFunction>(
   name: string,
@@ -36,8 +36,8 @@ export const createLoggingDecorator = <T extends AnyFunction>(
 }
 
 /**
- * 记录对象各个方法的调用情况
- * 并添加到 window.logged.*上
+ * 記錄物件各個方法的呼叫情況
+ * 並新增到 window.logged.* 上
  */
 export const logObject = <T extends { [K: string]: any }>(object: T, namespace: string): T => {
   const loggers = {} as any

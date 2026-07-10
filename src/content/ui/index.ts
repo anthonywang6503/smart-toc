@@ -116,6 +116,7 @@ export const ui = {
       $headings().filter((h) => h.level <= 2).length > 50
 
     let initialPlacement: 'left' | 'right'
+    let isCollapsed = false
 
     m.mount(root, {
       view() {
@@ -138,6 +139,7 @@ export const ui = {
           {
             class: [
               isTooManyHeadings() ? 'lengthy' : '',
+              isCollapsed ? 'collapsed' : '',
               `theme-${theme}`,
             ].filter(Boolean).join(' '),
             style: {
@@ -155,6 +157,9 @@ export const ui = {
             m(Handle, {
               userOffset: $offset(),
               onDrag,
+              onCollapseChange(value) {
+                isCollapsed = value
+              },
             }),
             m(TocContent, {
               article: $article(),

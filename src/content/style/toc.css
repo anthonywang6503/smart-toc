@@ -37,7 +37,7 @@
 }
 
 #smarttoc.theme-light {
-  --smarttoc-bg: #fff;
+  --smarttoc-bg: rgba(255, 255, 255, var(--smarttoc-opacity));
   --smarttoc-text: #6b7280;
   --smarttoc-muted: #9ca3af;
   --smarttoc-accent: #563d7c;
@@ -50,7 +50,7 @@
 }
 
 #smarttoc.theme-dark {
-  --smarttoc-bg: #111827;
+  --smarttoc-bg: rgba(17, 24, 39, var(--smarttoc-opacity));
   --smarttoc-text: #d1d5db;
   --smarttoc-muted: #9ca3af;
   --smarttoc-accent: #93c5fd;

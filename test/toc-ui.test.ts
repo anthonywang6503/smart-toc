@@ -107,3 +107,32 @@ test('TOC styles keep the handle visible, use a white dark-theme title, and hide
     /#smarttoc\.collapsed\s*>\s*ul\s*{[^}]*display:\s*none;/,
   )
 })
+
+test('TOC opacity only changes the theme background', () => {
+  const css = readFileSync(
+    new URL('../src/content/style/toc.css', import.meta.url),
+    'utf8',
+  )
+  const uiSource = readFileSync(
+    new URL('../src/content/ui/index.ts', import.meta.url),
+    'utf8',
+  )
+  const contentSource = readFileSync(
+    new URL('../src/content/index.ts', import.meta.url),
+    'utf8',
+  )
+
+  assert.match(
+    css,
+    /--smarttoc-bg:\s*rgba\(255, 255, 255, var\(--smarttoc-opacity\)\)/,
+  )
+  assert.match(
+    css,
+    /--smarttoc-bg:\s*rgba\(17, 24, 39, var\(--smarttoc-opacity\)\)/,
+  )
+  assert.match(
+    uiSource,
+    /'--smarttoc-opacity':\s*String\(opacity \/ 100\)/,
+  )
+  assert.match(contentSource, /const settingKeys = \[[^\]]*'opacity'/)
+})

@@ -2,6 +2,8 @@ import { Theme } from './types'
 
 export const MIN_TOC_FONT_SIZE = 8
 export const MAX_TOC_FONT_SIZE = 32
+export const MIN_TOC_OPACITY = 1
+export const MAX_TOC_OPACITY = 100
 
 export interface TocSettings {
   autoType: '0' | '1' | '2'
@@ -11,6 +13,7 @@ export interface TocSettings {
   selectorFeedly: string
   theme: Theme
   fontSize: number
+  opacity: number
   disabledDomains: string[]
 }
 
@@ -22,6 +25,7 @@ export const DEFAULT_TOC_SETTINGS: TocSettings = {
   selectorFeedly: '.entryBody',
   theme: Theme.Light,
   fontSize: 12,
+  opacity: 100,
   disabledDomains: [],
 }
 
@@ -40,6 +44,20 @@ export const normalizeFontSize = (value: unknown): number => {
   return Math.min(
     MAX_TOC_FONT_SIZE,
     Math.max(MIN_TOC_FONT_SIZE, Math.round(numberValue)),
+  )
+}
+
+export const normalizeOpacity = (value: unknown): number => {
+  const numberValue =
+    typeof value === 'number' ? value : Number(String(value).trim())
+
+  if (!Number.isFinite(numberValue)) {
+    return DEFAULT_TOC_SETTINGS.opacity
+  }
+
+  return Math.min(
+    MAX_TOC_OPACITY,
+    Math.max(MIN_TOC_OPACITY, Math.round(numberValue)),
   )
 }
 
@@ -113,6 +131,7 @@ export const normalizeTocSettings = (
         : DEFAULT_TOC_SETTINGS.selectorFeedly,
     theme: normalizeTheme(settings.theme),
     fontSize: normalizeFontSize(settings.fontSize),
+    opacity: normalizeOpacity(settings.opacity),
     disabledDomains: normalizeDisabledDomains(settings.disabledDomains),
   }
 }

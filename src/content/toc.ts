@@ -16,6 +16,7 @@ export interface TocPreference {
   isRememberPos: boolean
   theme: TocSettings['theme']
   fontSize: TocSettings['fontSize']
+  opacity: TocSettings['opacity']
 }
 
 export interface TocEvents {
@@ -333,6 +334,7 @@ export function createToc(options: {
     $topbarHeight,
     theme: options.preference.theme,
     fontSize: options.preference.fontSize,
+    opacity: options.preference.opacity,
     onDrag(offset) {
       $offset(offset)
       if (options.preference.isRememberPos) {
@@ -383,6 +385,7 @@ export function createToc(options: {
       isRememberPos: options.preference.isRememberPos,
       theme: options.preference.theme,
       fontSize: options.preference.fontSize,
+      opacity: options.preference.opacity,
     }
   }
 

@@ -6,6 +6,7 @@ import {
   isDomainDisabled,
   normalizeDisabledDomains,
   normalizeFontSize,
+  normalizeOpacity,
   normalizeTheme,
   normalizeTocSettings,
 } from '../src/content/settings'
@@ -23,6 +24,14 @@ test('normalizes font size as a bounded number', () => {
   assert.equal(normalizeFontSize('too-small'), DEFAULT_TOC_SETTINGS.fontSize)
   assert.equal(normalizeFontSize(4), 8)
   assert.equal(normalizeFontSize(80), 32)
+})
+
+test('normalizes opacity as a percentage from 1 to 100', () => {
+  assert.equal(normalizeOpacity('75'), 75)
+  assert.equal(normalizeOpacity(13.8), 14)
+  assert.equal(normalizeOpacity('invalid'), DEFAULT_TOC_SETTINGS.opacity)
+  assert.equal(normalizeOpacity(0), 1)
+  assert.equal(normalizeOpacity(101), 100)
 })
 
 test('normalizes disabled domains from arrays and textarea strings', () => {
@@ -53,12 +62,14 @@ test('normalizes the full TOC settings object', () => {
     normalizeTocSettings({
       theme: Theme.Dark,
       fontSize: '20',
+      opacity: '65',
       disabledDomains: 'one.test\nhttps://www.two.test/path',
     }),
     {
       ...DEFAULT_TOC_SETTINGS,
       theme: Theme.Dark,
       fontSize: 20,
+      opacity: 65,
       disabledDomains: ['one.test', 'two.test'],
     },
   )

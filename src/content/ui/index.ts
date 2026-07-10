@@ -78,6 +78,7 @@ export const ui = {
     $topbarHeight: Stream<number>
     theme: Theme
     fontSize: number
+    opacity: number
     onDrag(offset: Offset): void
     onScrollToHeading(index: number): Promise<void>
   }) => {
@@ -91,6 +92,7 @@ export const ui = {
       $topbarHeight,
       theme,
       fontSize,
+      opacity,
       onDrag,
       onScrollToHeading,
     } = options
@@ -151,6 +153,7 @@ export const ui = {
                 placement: initialPlacement,
               }),
               fontSize: `${fontSize}px`,
+              '--smarttoc-opacity': String(opacity / 100),
             },
           },
           [

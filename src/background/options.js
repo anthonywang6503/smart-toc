@@ -24,6 +24,7 @@ const readForm = () => {
     selectorFeedly: getElement('selector-feedly').value,
     theme: getCheckedValue('theme'),
     fontSize: getElement('font-size').value,
+    opacity: getElement('opacity').value,
     disabledDomains: getElement('disabled-domains').value,
   })
 }
@@ -36,6 +37,8 @@ const writeForm = (storedSettings) => {
   getElement(`auto-${options.autoType}`).checked = true
   getElement(`theme-${options.theme}`).checked = true
   getElement('font-size').value = String(options.fontSize)
+  getElement('opacity').value = String(options.opacity)
+  getElement('opacity-value').textContent = String(options.opacity)
   getElement('selector-inoreader').value = options.selectorInoreader
   getElement('selector-feedly').value = options.selectorFeedly
   getElement('disabled-domains').value = options.disabledDomains.join('\n')
@@ -65,6 +68,10 @@ const reset_options = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   restore_options()
+
+  getElement('opacity').addEventListener('input', (event) => {
+    getElement('opacity-value').textContent = event.target.value
+  })
 
   document.querySelectorAll('input, textarea').forEach((input) => {
     input.addEventListener('change', save_options)

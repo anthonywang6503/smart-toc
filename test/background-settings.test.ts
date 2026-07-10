@@ -23,6 +23,14 @@ test('background settings helper exposes storage defaults', () => {
     selectorFeedly: '.entryBody',
     theme: 'light',
     fontSize: 12,
+    opacity: 100,
     disabledDomains: [],
   })
+})
+
+test('background settings helper normalizes opacity from 1 to 100', () => {
+  assert.equal(settings.normalizeOpacity('75'), 75)
+  assert.equal(settings.normalizeOpacity(0), 1)
+  assert.equal(settings.normalizeOpacity(101), 100)
+  assert.equal(settings.normalizeOpacity('invalid'), 100)
 })

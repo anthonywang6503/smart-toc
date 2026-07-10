@@ -21,6 +21,7 @@ function setPreference(
     preference.isRememberPos = settings.isRememberPos
     preference.theme = settings.theme
     preference.fontSize = settings.fontSize
+    preference.opacity = settings.opacity
 
     if (settings.isRememberPos) {
       preference.offset.x = offset.x
@@ -58,6 +59,7 @@ if (window === getContentWindow()) {
     isRememberPos: DEFAULT_TOC_SETTINGS.isRememberPos,
     theme: DEFAULT_TOC_SETTINGS.theme,
     fontSize: DEFAULT_TOC_SETTINGS.fontSize,
+    opacity: DEFAULT_TOC_SETTINGS.opacity,
   }
   let isLoad = false;
   let isNewArticleDetected = true
@@ -150,6 +152,7 @@ if (window === getContentWindow()) {
       'disabledDomains',
       'theme',
       'fontSize',
+      'opacity',
       'isRememberPos',
       'selectorInoreader',
       'selectorFeedly',

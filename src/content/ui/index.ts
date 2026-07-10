@@ -119,6 +119,8 @@ export const ui = {
 
     let initialPlacement: 'left' | 'right'
     let isCollapsed = false
+    let anchoredTop: number | undefined
+    let anchorOffsetY = 0
 
     m.mount(root, {
       view() {
@@ -152,6 +154,12 @@ export const ui = {
                 topMargin: $topbarHeight() || 0,
                 placement: initialPlacement,
               }),
+              ...(anchoredTop === undefined
+                ? {}
+                : {
+                    top: `${anchoredTop + $offset().y - anchorOffsetY}px`,
+                    bottom: 'auto',
+                  }),
               fontSize: `${fontSize}px`,
               '--smarttoc-opacity': String(opacity / 100),
             },
@@ -161,15 +169,29 @@ export const ui = {
               userOffset: $offset(),
               onDrag,
               onCollapseChange(value) {
+                if (value) {
+                  const toc = document.getElementById('smarttoc')
+                  if (toc) {
+                    anchoredTop = toc.getBoundingClientRect().top
+                    anchorOffsetY = $offset().y
+                  }
+                }
                 isCollapsed = value
               },
             }),
-            m(TocContent, {
-              article: $article(),
-              headings: $headings(),
-              activeHeading: $activeHeading(),
-              onScrollToHeading,
-            }),
+            m(
+              '.toc-content',
+              { 'aria-hidden': isCollapsed },
+              m(
+                '.toc-content-clip',
+                m(TocContent, {
+                  article: $article(),
+                  headings: $headings(),
+                  activeHeading: $activeHeading(),
+                  onScrollToHeading,
+                }),
+              ),
+            ),
           ],
         )
       },

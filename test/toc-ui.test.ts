@@ -104,8 +104,27 @@ test('TOC styles keep the handle visible, use a white dark-theme title, and hide
   )
   assert.match(
     css,
-    /#smarttoc\.collapsed\s*>\s*ul\s*{[^}]*display:\s*none;/,
+    /#smarttoc\.collapsed\s*>\s*\.toc-content\s*{[^}]*grid-template-rows:\s*0fr;/,
   )
+})
+
+test('TOC collapse keeps its top edge fixed and animates content upward', () => {
+  const css = readFileSync(
+    new URL('../src/content/style/toc.css', import.meta.url),
+    'utf8',
+  )
+  const uiSource = readFileSync(
+    new URL('../src/content/ui/index.ts', import.meta.url),
+    'utf8',
+  )
+
+  assert.match(
+    css,
+    /#smarttoc\s*>\s*\.toc-content\s*{[^}]*grid-template-rows:\s*1fr;[^}]*transition:\s*grid-template-rows 0\.2s ease;/,
+  )
+  assert.match(uiSource, /getBoundingClientRect\(\)\.top/)
+  assert.match(uiSource, /bottom:\s*'auto'/)
+  assert.match(uiSource, /m\(\s*'\.toc-content'/)
 })
 
 test('TOC opacity only changes the theme background', () => {

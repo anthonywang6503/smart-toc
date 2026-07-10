@@ -101,14 +101,29 @@
   background: var(--smarttoc-hover-bg);
 }
 
-#smarttoc > ul {
+#smarttoc > .toc-content {
+  display: grid;
   flex-grow: 1;
-  padding: 0 1.3em 1.3em 1em;
-  overflow-y: auto;
+  grid-template-rows: 1fr;
+  min-height: 0;
+  transition: grid-template-rows 0.2s ease;
 }
 
-#smarttoc.collapsed > ul {
-  display: none;
+#smarttoc.collapsed > .toc-content {
+  grid-template-rows: 0fr;
+}
+
+#smarttoc > .toc-content > .toc-content-clip {
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#smarttoc > .toc-content > .toc-content-clip > ul {
+  flex-grow: 1;
+  min-height: 0;
+  padding: 0 1.3em 1.3em 1em;
+  overflow-y: auto;
 }
 
 /* all headings  */

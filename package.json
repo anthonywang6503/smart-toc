@@ -1,6 +1,6 @@
 {
   "name": "smart-toc",
-  "version": "0.7.5",
+  "version": "0.8.0",
   "description": "an chrome extension that generates a table of content for webpage",
   "main": "src/js/index.js",
   "packageManager": "pnpm@11.10.0",

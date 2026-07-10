@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Simple Outliner / 智慧網頁大綱",
-  "version": "0.7.5",
+  "version": "0.8.0",
   "description": "Simple Outliner / 自動生成網頁大綱、目錄，支援 Inoreader 與 Feedly。",
   "options_page": "options.html",
   "action": {
